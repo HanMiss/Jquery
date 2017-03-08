@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝滚动</title>
+	<style type="text/css">
+		#nav{
+			border:1px solid #f00;
+			position: relative;/*父元素有relative，子元素才会以其为边框进行定位*/
+			width: 942px;
+			height: 98px;
+			/*margin:0px auto; 居中*/
+			left: 50%;
+			margin-left: -471px;
+			overflow: hidden;
+		}
+		#nav a{
+			position: absolute;/*绝对定位，脱离文档流*/
+			top: 0px;
+			left: 0px;
+			margin-right: 10px;
+		}
+
+	</style>
+	<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+	<script type="text/javascript">
+		$(function(){
+           //每一张照片平铺开来
+           $("#nav a").each(function(index,element){
+           //遍历每一张图片，每张距离#nav左边距离为indes*157px
+               $(this).css({"left":index*157+"px"})
+           });
+           //让每张照片滚动起来
+           var sid;
+           function move(){
+                 sid=setInterval(function(){
+             $("#nav a").css({"left":"-=1px"});
+             if($("#nav a:eq(0)").position().left<=-942){   //position相对于父元素定位
+                 $("#nav a:lt(6)").each(function(index,ele){
+                    $(this).css({"left":index*157+942+"px"});
+                 });//lt小于6的过滤器
+             }
+             if($("#nav a:eq(6)").position().left<=-942){
+                 $("#nav a:gt(5)").each(function(index,ele){
+                    $(this).css({"left":index*157+942+"px"});
+                 });
+             }
+           },3);//setInterval(fun(){},间隔时间)--多长时间执行一次，循环调用
+           };
+           move();//封装成函数
+           //鼠标划入划出功能
+           $("#nav").mouseover(function(){
+           	clearInterval(sid);
+           	}).mouseout(function(){
+           		move();
+           });
+		});
+	</script>
+</head>
+<body>
+	<!--div[id=nav]>a[href=javascript:]*12>img[src=img/jjx$.jpg alt=home$]-->
+	<div id="nav">
+		<a href="javascript:"><img src="img/jjx1.jpg" alt="home1"></a>
+		<a href="javascript:"><img src="img/jjx2.jpg" alt="home2"></a>
+		<a href="javascript:"><img src="img/jjx3.jpg" alt="home3"></a>
+		<a href="javascript:"><img src="img/jjx4.jpg" alt="home4"></a>
+		<a href="javascript:"><img src="img/jjx5.jpg" alt="home5"></a>
+		<a href="javascript:"><img src="img/jjx6.jpg" alt="home6"></a>
+		<a href="javascript:"><img src="img/jjx1.jpg" alt="home7"></a>
+		<a href="javascript:"><img src="img/jjx2.jpg" alt="home8"></a>
+		<a href="javascript:"><img src="img/jjx3.jpg" alt="home9"></a>
+		<a href="javascript:"><img src="img/jjx4.jpg" alt="home10"></a>
+		<a href="javascript:"><img src="img/jjx5.jpg" alt="home11"></a>
+		<a href="javascript:"><img src="img/jjx6.jpg" alt="home12"></a>
+	</div>
+</body>
+</html>
